@@ -106,6 +106,68 @@ contract NFTMarketplace is ERC721URIStorage {
             false
         );
     }
-}
 
+    //started
+    // FUNCTION FOR RESALE TOKEN
+    function reSellToken(uint256 tokenId, uint256 price) public payable {
+        require(
+            idMarketItem[tokenId].owner == msg-sender, 
+            "Only item owner can perform this operation"
+        );
+        require(
+            msg.value == listingPrice, 
+            "Price must be equal to listing price"
+        );
+        idMarketItem[tokenId].price = price;
+        idMarketItem[tokenId].sold = false;
+        idMarketItem[tokenId].seller = payable(msg.sender);
+        idMarketItem[tokenId].owner = payable(address(this));
+
+        _itemsSold.decrement();
+        _transfer(msg. sender, address(this), tokenid);
+    }
+
+    // FUNCTION CREATEMARKETSALE
+    function createMarketSale(uint256 tokenId) public payable {
+        uint256 price = idMarketItem[tokenId]-price; T
+        require(
+            msg. value == price,
+            "Please submit the asking price in order to complete the purchase"
+        );
+
+        idMarketItem[tokenId].owner = payable(msg.sender);
+        idMarketItem[tokenId].sold = true;
+        idMarketItem[tokenId].owner = payable(address(0));
+
+        _itemsSold.increment();
+
+        _transfer(address(this), msg.sender,tokenId);
+
+        payable(owner).transfer(listingPrice);
+        payable(idMarketItem[tokenId].seller).transfer(msg.value);
+    }
+
+    //GETTING UNSOLD NFT DATA
+    function fetchMarketItem() public view returns(MarketItem[] memory){
+        uinit256 itemCount = _tokenIds.current();
+        uinit256 unSoldItemCount = _tokenIds.current() -_itemsSold.current();
+        uinit256 currentIndex = 0;                     // ??
+
+        MarketItem[] memory items = new MarketItem[](unSoldItemCount);
+
+        for(uint256 i = 0; i < itemCount; i++){
+            if(idMarketItem[i+1].owner == address(this)){
+                uinit256 currentId = i + 1;
+                
+                MarketItem storage currentItem = idMarketItem[currentId];
+                items[currentIndex] = currentItem;
+                currentIndex++; 
+            }
+        }
+        return items;
+    }
+
+    //PURCHASE ITEM
+    // code here
+}
         
