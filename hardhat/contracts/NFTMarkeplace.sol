@@ -2,8 +2,8 @@
 pragma solidity ^0.8.4;
 
 //Internal Import For NFT OPENZIPLINE
-import "@openzeppelin/contracts/utils/Counters.sol"; //using as a
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URISrora";
+import "@openzeppelin/contracts/utils/Counters.sol"; 
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 import "hardhat/console.sol";
@@ -41,7 +41,6 @@ contract NFTMarketplace is ERC721URIStorage {
             msg.sender == owner, 
             "only owner of the marketplace can change the listing price"
         );
-        ;
     }
 
     constructor() ERC721("NFT Metavarse Token", "MYNFT"){
@@ -67,7 +66,7 @@ contract NFTMarketplace is ERC721URIStorage {
         payable 
         returns (uint256) 
         {
-            _tokenIds.ncrement();
+            _tokenIds.increment();
 
             uint256 newTokenId = _tokenIds.current();
 
@@ -114,24 +113,26 @@ contract NFTMarketplace is ERC721URIStorage {
             idMarketItem[tokenId].owner == msg-sender, 
             "Only item owner can perform this operation"
         );
+
         require(
             msg.value == listingPrice, 
             "Price must be equal to listing price"
         );
+
         idMarketItem[tokenId].price = price;
         idMarketItem[tokenId].sold = false;
         idMarketItem[tokenId].seller = payable(msg.sender);
         idMarketItem[tokenId].owner = payable(address(this));
 
         _itemsSold.decrement();
-        _transfer(msg. sender, address(this), tokenid);
+        _transfer(msg.sender, address(this), tokenid);
     }
 
     // FUNCTION CREATEMARKETSALE
     function createMarketSale(uint256 tokenId) public payable {
-        uint256 price = idMarketItem[tokenId]-price; T
+        uint256 price = idMarketItem[tokenId]-price; 
         require(
-            msg. value == price,
+            msg.value == price,
             "Please submit the asking price in order to complete the purchase"
         );
 
@@ -166,8 +167,52 @@ contract NFTMarketplace is ERC721URIStorage {
         }
         return items;
     }
-
+    // started
     //PURCHASE ITEM
-    // code here
-}
-        
+    function fetchMyNFTs() public view returns(MarketItem[] memory){
+        uinit256 totalCount = _tokenIds.current();
+        uinit256 itemCount = 0;
+        uinit256 currentIndex = 0;
+
+        for(uint256 i = 0; i < totalCount; i++){
+            if(idMarketItem[i+1].owner == msg.sender){
+                itemCount++;
+            }
+        }
+
+        MarketItem[] memory items = new MarketItem[](myItemCount);
+        for(uint256 i = 0; i < totalCount; i++){
+            if(idMarketItem[i+1].owner == msg.sender){
+                uinit256 currentId = i + 1;
+                MarketItem storage currentItem = idMarketItem[currentId];
+                items[currentIndex] = currentItem;
+                currentIndex++; 
+            }                 
+        }
+         return items;   
+    }
+    
+    // SINGLE USER ITEMS
+    function fetchItemsListed() public view returns(MarketItem memory){
+        uinit256 totalCount = _tokenIds.current();
+        uinit256 itemCount = 0;
+        uinit256 currentIndex = 0;
+
+        for(uint256 i = 0; i < totalCount; i++){
+            if(idMarketItem[i+1].owner == msg.sender){
+                itemCount++;
+            }
+        }
+
+        MarketItem[] memory items = new MarketItem[](myItemCount);
+        for(uint256 i = 0; i < totalCount; i++){
+            if(idMarketItem[i+1].owner == msg.sender){
+                uinit256 currentId = i + 1;
+                MarketItem storage currentItem = idMarketItem[currentId];
+                items[currentIndex] = currentItem;
+                currentIndex++; 
+            }                 
+        }
+         return items;   
+    }                                
+}    
