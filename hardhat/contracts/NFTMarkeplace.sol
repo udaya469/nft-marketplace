@@ -9,16 +9,16 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "hardhat/console.sol";
 
 contract NFTMarketplace is ERC721URIStorage {
-    using Couters for Counters.Counter;
+    using Counters for Counters.Counter;
 
-    Counters.Couner private _tokenIds;
+    Counters.Counter private _tokenIds;
     Counters.Counter private _tokenSold;
 
-    uint25 listngPrice=0.0015 ether;
+    uint256 listngPrice=0.0015 ether;
 
     address payable owner;
 
-    mapping(unit256 => MarketItem) private idMarketItem;
+    mapping(uint256 => MarketItem) private idMarketItem;
 
     struct MarketItem {
         uint256 tokenId;
@@ -47,7 +47,7 @@ contract NFTMarketplace is ERC721URIStorage {
         owner == payable(msg.sender);
     }
 
-    function updateListingPrice(uinit256 _listingPrice) 
+    function updateListingPrice(uint256 _listingPrice) 
     public 
     payable
     onlyOwner
@@ -130,7 +130,7 @@ contract NFTMarketplace is ERC721URIStorage {
 
     // FUNCTION CREATEMARKETSALE
     function createMarketSale(uint256 tokenId) public payable {
-        uint256 price = idMarketItem[tokenId]-price; 
+        uint256 price = idMarketItem[tokenId].price; 
         require(
             msg.value == price,
             "Please submit the asking price in order to complete the purchase"
@@ -150,15 +150,15 @@ contract NFTMarketplace is ERC721URIStorage {
 
     //GETTING UNSOLD NFT DATA
     function fetchMarketItem() public view returns(MarketItem[] memory){
-        uinit256 itemCount = _tokenIds.current();
-        uinit256 unSoldItemCount = _tokenIds.current() -_itemsSold.current();
-        uinit256 currentIndex = 0;                     // ??
+        uint256 itemCount = _tokenIds.current();
+        uint256 unSoldItemCount = _tokenIds.current() -_itemsSold.current();
+        uint256 currentIndex = 0;                     // ??
 
         MarketItem[] memory items = new MarketItem[](unSoldItemCount);
 
         for(uint256 i = 0; i < itemCount; i++){
             if(idMarketItem[i+1].owner == address(this)){
-                uinit256 currentId = i + 1;
+                uint256 currentId = i + 1;
                 
                 MarketItem storage currentItem = idMarketItem[currentId];
                 items[currentIndex] = currentItem;
@@ -170,9 +170,9 @@ contract NFTMarketplace is ERC721URIStorage {
     // started
     //PURCHASE ITEM
     function fetchMyNFTs() public view returns(MarketItem[] memory){
-        uinit256 totalCount = _tokenIds.current();
-        uinit256 itemCount = 0;
-        uinit256 currentIndex = 0;
+        uint256 totalCount = _tokenIds.current();
+        uint256 itemCount = 0;
+        uint256 currentIndex = 0;
 
         for(uint256 i = 0; i < totalCount; i++){
             if(idMarketItem[i+1].owner == msg.sender){
@@ -183,7 +183,7 @@ contract NFTMarketplace is ERC721URIStorage {
         MarketItem[] memory items = new MarketItem[](myItemCount);
         for(uint256 i = 0; i < totalCount; i++){
             if(idMarketItem[i+1].owner == msg.sender){
-                uinit256 currentId = i + 1;
+                uint256 currentId = i + 1;
                 MarketItem storage currentItem = idMarketItem[currentId];
                 items[currentIndex] = currentItem;
                 currentIndex++; 
@@ -194,9 +194,9 @@ contract NFTMarketplace is ERC721URIStorage {
     
     // SINGLE USER ITEMS
     function fetchItemsListed() public view returns(MarketItem memory){
-        uinit256 totalCount = _tokenIds.current();
-        uinit256 itemCount = 0;
-        uinit256 currentIndex = 0;
+        uint256 totalCount = _tokenIds.current();
+        uint256 itemCount = 0;
+        uint256 currentIndex = 0;
 
         for(uint256 i = 0; i < totalCount; i++){
             if(idMarketItem[i+1].owner == msg.sender){
@@ -207,7 +207,7 @@ contract NFTMarketplace is ERC721URIStorage {
         MarketItem[] memory items = new MarketItem[](myItemCount);
         for(uint256 i = 0; i < totalCount; i++){
             if(idMarketItem[i+1].owner == msg.sender){
-                uinit256 currentId = i + 1;
+                uint256 currentId = i + 1;
                 MarketItem storage currentItem = idMarketItem[currentId];
                 items[currentIndex] = currentItem;
                 currentIndex++; 
