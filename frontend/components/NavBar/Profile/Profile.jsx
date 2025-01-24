@@ -1,11 +1,9 @@
 import React from "react";
 import Image from "next/image";
 import {FaUserAlt, FaRegImage, FaUserEdit} from 'react-icons/fa' ;
-import {MdHelpCenter } from "react-icons/tb";
+import {MdHelpCenter } from "react-icons/md";
 import {TbDownloadOff, TbDownload} from "react-icons/tb";
-import  Link from "next/Link";
-
-//Internal import 
+import  Link from "next/link"; 
 import Style from './Profile.module.css'
 import images from "../../../img";
 
@@ -15,7 +13,7 @@ const Profile = () =>{
             <div className={Style.profile_account}>
                 <Image 
                     src={images.user1}
-                    alt="user profile"
+                    alt="Profile picture"
                     width={50}
                     height={50}
                     className={Style.profile_account_img}
