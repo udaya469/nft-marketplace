@@ -1,11 +1,12 @@
 import React,{ useState } from "react";
 import Image from "next/image";
 import { GrClose } from 'react-icons/gr';
-import{ TiSocialFacebook,TiSocialLinkedin,TiSocialInstagram,TiSocialTwitter,TiSocialYoutube, TiArrowSortedDown,TiArrowSortedUp } from "react-icons/ti";
+import{ TiSocialFacebook,TiSocialLinkedin,TiSocialInstagram,TiSocialTwitter,TiSocialYoutube, TiArrowSortedDown,TiArrowSortedUp, } from "react-icons/ti";
+import Link from "next/link";
+
 import Style from './Sidebar.module.css';
 import images from "../../../img";
 import Button from "../../Button/Button";
-import Link from "next/link";
 
 // connect with navbar.js
 const Sidebar = ({setOpenSideMenu}) =>{
@@ -68,12 +69,24 @@ const Sidebar = ({setOpenSideMenu}) =>{
         ];
 
     
-    const OpenDiscoverMenu = ()=> setOpenDiscover(!openDiscover);
-    const OpenHelpMenu = ()=> setOpenHelp(!openHelp);
+    const OpenDiscoverMenu = ()=> {
+      if(!openDiscover){
+        setOpenDiscover(true);
+      }else{
+        setOpenDiscover(false);
+      }
+    };
+    const OpenHelpMenu = ()=> {
+      if(!openHelp){
+        setOpenHelp(true);
+      }else{
+        setOpenHelp(false);
+      }
+    };
     const CloseSideBar = () => {
-    if(setOpenSideMenu){
-        setOpenSideMenu(false);
-    }
+      if(setOpenSideMenu){
+          setOpenSideMenu(false);
+      }
     };
     return(
         <div className={Style.sideBar}>
@@ -120,30 +133,30 @@ const Sidebar = ({setOpenSideMenu}) =>{
                             </div>
                     )
                 }
-            </div>            <div>
-            <div className={Style.sideBar_menu_box} onClick={()=>OpenHelpMenu()}>
-                    <p>HelpCenter</p>
-                    <TiArrowSortedDown/>
-                </div>
-
-                {
-                    openHelp && (
-                        <div className={Style.sideBar_discover}>
-                            {helpCenter.map((el,i) => (
-                                <p key={i+1}>
-                                    <Link href={{pathname: `${el.link}`}}>{el.name}</Link>
-                                </p>
-                            ))}
-                            </div>
-                    )                }
+            </div>      
+            <div>
+              <div className={Style.sideBar_menu_box} onClick={()=>OpenHelpMenu()}>
+                <p>HelpCenter</p>
+                <TiArrowSortedDown/>
+              </div>
+              {
+                  openHelp && (
+                    <div className={Style.sideBar_discover}>
+                      {helpCenter.map((el,i) => (
+                          <p key={i+1}>
+                             <Link href={{pathname: `${el.link}`}}>{el.name}</Link>
+                          </p>
+                        ))}
+                     </div>
+                    )}
             </div>
 
         </div>
 
 
         <div className={Style.sideBar_button}>
-            <Button btn = "Create" />
-            <Button btn = "Connect Wallet" />
+            <Button btnName = "Create" />
+            <Button btnName = "Connect Wallet" />
         </div>
         </div>
     )

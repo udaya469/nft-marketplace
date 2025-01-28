@@ -4,6 +4,8 @@ import {FaUserAlt, FaRegImage, FaUserEdit} from 'react-icons/fa' ;
 import {MdHelpCenter } from "react-icons/md";
 import {TbDownloadOff, TbDownload} from "react-icons/tb";
 import  Link from "next/link"; 
+
+//internal
 import Style from './Profile.module.css'
 import images from "../../../img";
 
